@@ -14,13 +14,47 @@
         <section class="main">
             <h1 class="title">TODO</h1>
 
-            <form class="add-form" action="">
+            <div class="filters">
+                <label class="filter-input">
+                    All
+                    <input
+                        id="radio-all"
+                        value="all"
+                        name="filter"
+                        type="radio"
+                        checked
+                    />
+                </label>
+                <label class="filter-input">
+                    Completed
+                    <input
+                        id="radio-completed"
+                        value="completed"
+                        name="filter"
+                        type="radio"
+                    />
+                </label>
+                <label class="filter-input">
+                    Uncompleted
+                    <input
+                        id="radio-uncompleted"
+                        value="uncompleted"
+                        name="filter"
+                        type="radio"
+                    />
+                </label>
+            </div>
+
+            <form class="add-form">
                 <input
+                    tabindex="2"
                     id="add-input"
                     placeholder="What you should to do?"
                     type="text"
                 />
-                <button class="add-button btn">Add</button>
+                <button class="add-button btn" tabindex="0">
+                    Add
+                </button>
             </form>
 
             <div class="todo-content">
@@ -30,7 +64,7 @@
             </div>
             <div class="footer">
                 <button class="clear-button btn">
-                    Clear all todos
+                    Clear completed todos
                 </button>
             </div>
         </section>

@@ -23,6 +23,31 @@ body {
     color: blueviolet;
 }
 
+/* Filters */
+.filters {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px;
+    gap: 10px;
+}
+
+.filter-input {
+    display: flex;
+    /* justify-content: center; */
+    border-bottom: 2px solid #aaaaaa;
+}
+
+.filter-input:first-child {
+    /* border: none; */
+}
+
+@media screen and (max-width: 972px) {
+    .filters {
+        font-size: 1.1rem;
+    }
+}
+
 /* TODO add form */
 .add-form {
     box-shadow: 1px 1px 15px lightgray;
@@ -63,7 +88,7 @@ body {
 .todo-list {
     margin: 0;
     padding: 0;
-    max-height: 30vh;
+    max-height: 40vh;
     position: relative;
 }
 
@@ -130,8 +155,7 @@ body {
     gap: 10px;
 }
 
-/* TODO checkmark */
-
+/* TODO internal checkmark */
 .todo-checked {
     position: absolute;
     opacity: 0;
