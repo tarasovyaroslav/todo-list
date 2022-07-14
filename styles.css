@@ -107,9 +107,10 @@ body {
     border-radius: 3px;
 }
 
-.todo-content--empty {
+#todo-content__empty-message {
     text-align: center;
     padding: 1.5rem;
+    width: 100%;
 }
 
 /* TODO: appearance of icon only when scroll is visible */

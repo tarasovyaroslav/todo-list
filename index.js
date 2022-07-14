@@ -44,11 +44,12 @@ function switchTodo(elementId) {
         checkbox.checked = todo.checked;
 
         todos[key] = { ...todo };
+
         filterTodos();
         sendTodosToStorage();
     } catch (error) {
         renderTodos();
-        console.error('Check local storage');
+        console.error('Something went wrong with local storage');
         console.log(error);
     }
 }
@@ -183,7 +184,6 @@ function addTodo() {
     todoList.append(todo);
 
     filterTodos();
-    showEmptyMessage();
     sendTodosToStorage();
     addInput.value = '';
 }
@@ -196,7 +196,10 @@ function submitHandler(e) {
 function removeTodo(e) {
     const todo = document.querySelector(`#i${e.target.id.slice(1)}`);
     todo.remove();
+
+    //here
     showEmptyMessage();
+
     sendTodosToStorage();
 }
 
@@ -213,23 +216,19 @@ function filterTodos() {
         switch (filter) {
             case 'completed':
                 if (!checked) {
-                    // todoList.append(createTodoElement(key, todo));
                     todo.classList.add('todo-item--hidden');
                 }
                 break;
             case 'uncompleted':
                 if (checked) {
-                    console.log('completed: ', checked);
                     todo.classList.add('todo-item--hidden');
-                    // todoList.append(createTodoElement(key, todo));
                 }
-                break;
-            default:
-                // todo.classList.add('todo-item--hidden');
-                // todoList.append(createTodoElement(key, todo));
                 break;
         }
     });
+
+    //here
+    showEmptyMessage();
 }
 
 function renderTodos() {
@@ -237,19 +236,10 @@ function renderTodos() {
         initTodoStorage();
     }
 
-    const filterButton = document.querySelector(
-        'input[name=filter]:checked'
-    );
-    const filter = filterButton.value;
-
-    // clear todo layout
     todoList.innerHTML = '';
 
     if (isTodosEmpty()) {
-        const emptyMessage = document.createElement('div');
-        emptyMessage.classList.add('todo-content--empty');
-        emptyMessage.append('Create some todos!');
-        todoList.append(emptyMessage);
+        showEmptyMessage();
     } else {
         const todos = getTodosObject();
         Object.keys(todos).forEach((key) => {
@@ -259,39 +249,56 @@ function renderTodos() {
     }
 }
 
-// TODO: show message for empty list
-// function showEmptyMessage() {
-//     let count = 0;
-//     todoList.childNodes.forEach((todo) => {
-//         console.log(todo);
-//         if (!todo.classList.contains('todo-item--hidden')) {
-//             count += 1;
-//         }
-//     });
-//     console.log(count);
-//     const filterButton = document.querySelector(
-//         'input[name=filter]:checked'
-//     );
-//     const filter = filterButton.value;
-//     if (count === 0) {
-//         console.log('here');
-//         const infoMessage = document.createElement('div');
-//         infoMessage.classList.add('todo-content--empty');
+function isSomeTodosDisplayed() {
+    const todos = document.querySelectorAll('.todo-item');
+    for (let todo of todos) {
+        if (!todo.classList.contains('todo-item--hidden')) {
+            return true;
+        }
+    }
 
-//         let infoText = 'Create some todos!';
+    return false;
+}
 
-//         if (filter === 'completed') {
-//             infoText = 'No completed todos.';
-//         }
+function createEmptyMessage(message) {
+    const emptyMessage = document.createElement('div');
+    emptyMessage.setAttribute('id', 'todo-content__empty-message');
+    emptyMessage.append(message);
+    return emptyMessage;
+}
 
-//         if (filter === 'uncompleted') {
-//             infoText = 'Well done! All completed.';
-//         }
+// Show message for empty list
+function showEmptyMessage() {
+    const filterButton = document.querySelector(
+        'input[name=filter]:checked'
+    );
+    const filter = filterButton.value;
 
-//         infoMessage.append(infoText);
-//         todoList.append(infoMessage);
-//     }
-// }
+    const message = document.getElementById(
+        'todo-content__empty-message'
+    );
+    if (!!message) {
+        console.log(message);
+        message.remove();
+    }
+
+    if (!isSomeTodosDisplayed()) {
+        let infoText = 'Create some todos!';
+
+        if (filter === 'completed') {
+            infoText = 'No completed todos.';
+        }
+
+        if (filter === 'uncompleted') {
+            infoText = 'Well done! All completed.';
+        }
+
+        const infoMessage = createEmptyMessage(infoText);
+
+        // infoMessage.append(infoText);
+        todoList.append(infoMessage);
+    }
+}
 
 function clearCompletedTodos() {
     const ok = confirm(
@@ -307,6 +314,9 @@ function clearCompletedTodos() {
                 todo.remove();
             }
         });
+
+        //here
+        showEmptyMessage();
 
         sendTodosToStorage();
     }
